@@ -18,4 +18,6 @@ funcao_principal {
   inteiro quantidade
   real retorno
   caracter funcoes
+
+  i := soma
 }

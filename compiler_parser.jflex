@@ -38,6 +38,7 @@ caracter { return Parser.CARACTER; }
 "(" { return Parser.ABRE_PARENTESES; }
 ")" { return Parser.FECHA_PARENTESES; }
 
+":=" { return Parser.RECEBE; }
 
 [a-zA-Z_][a-zA-Z0-9_]*	{ 
 		yyparser.yylval = new ParserVal(yytext());
