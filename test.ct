@@ -1,0 +1,16 @@
+incluir <stdio.h>
+incluir <stdlib.h>
+
+funcao inteiro test {
+  inteiro variavel
+  real teste
+  caracter teste_2
+}
+
+funcao_principal {
+  inteiro i
+  inteiro soma
+  inteiro quantidade
+  real retorno
+  caracter funcoes
+}

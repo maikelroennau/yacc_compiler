@@ -1,0 +1,108 @@
+// Inclusao de Bibliotecas
+
+incluir <stdio.h>
+incluir <math.h>
+
+// Funcao media que retorna um real
+
+funcao real media (inteiro a) {
+  inteiro i
+  inteiro soma
+  inteiro quantidade
+  real retorno
+
+  soma := 0
+  quantidade := 0
+  
+  para (i := 1; i <= a; i++) {  
+    se (a%i == 0) {
+      quantidade++
+      soma := soma + i
+    }
+  }
+
+  retorno := soma / quantidade
+  retornar retorno
+}
+
+funcao inteiro soma (inteiro a) {
+  inteiro i
+  inteiro somatorio
+
+  somatorio := 0
+  
+  para (i:=1;i<=a;i++) {
+    se (a%i==0)
+      somatorio:=somatorio+i
+  }
+  retornar somatorio
+}
+
+funcao inteiro fatorial (inteiro a) {
+  inteiro i
+  inteiro fat
+
+  fat := 1
+  para (i=1;i<=a;i++) {}
+    fat:=fat*i
+  }
+  retornar fat
+}
+
+funcao caracter geraFuncao () {
+  inteiro valor
+  valor := rand()%10
+  se (valor<=3) {
+    retornar 'm'
+  } senao {
+    se (valor<=6) {
+      retornar 's'
+    } senao {
+      retornar 'f'
+    }
+  }
+}
+
+funcao inteiro geraValores () {
+  inteiro retorno
+  retorno := (rand()%10+1)
+  retornar retorno
+}
+
+funcao_principal {
+  caracter funcoes[tamanho]
+  inteiro valores[tamanho]
+  real resultado[tamanho]
+  inteiro i
+
+  i := 0
+  enquanto (i < tamanho) {
+    funcoes[i]=geraFuncao()
+    valores[i]=geraValores()
+    i++  
+  }
+
+  i := 0
+  faca {
+    caso (funcoes[i]) {
+      opcao 'm': 
+        resultado[i]=media(valores[i])
+        fim_opcao
+      opcao 's':
+        resultado[i]=soma(valores[i])
+        fim_opcao
+      opcao 'f':
+        resultado[i]=fatorial(valores[i])
+        fim_opcao
+      }
+      i++
+  } ate (i >= tamanho)
+
+  /* A parte final é só para verificar o resultado */
+  para (i :=0; i<tamanho; i++) {
+    imprima("%d ", valores[i])
+    imprima("%c ", funcoes[i])
+    imprima("%f\n", resultado[i])
+  }
+  retornar 0
+}

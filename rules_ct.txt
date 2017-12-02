@@ -1,0 +1,50 @@
+inicio -> programa
+
+programa -> inclusao programa
+          | funcao_principal programa
+          | funcao_secundaria programa
+          | ε
+
+
+inclusao -> "#include" [TEXTO]
+
+
+funcao_principal -> "int main()" { comandos }
+
+funcao_secundaria -> "funcao" tipo [TEXTO] { comandos } programa
+
+
+comandos -> declaracao
+
+
+declaracao -> variavel
+
+
+variavel -> "inteiro" [TEXTO]
+          | "real"    [TEXTO]
+          | "caratere [TEXTO]
+
+tipo -> "inteiro"
+      | "real"
+      | "caracter"
+
+
+atribuicao -> [TEXTO] := numeros
+            | [TEXTO] := [TEXTO]
+            | [TEXTO] := [TEXTO] operacao numeros
+            | [TEXTO] := [TEXTO] operacao [TEXTO]
+
+
+numeros -> 0-9 numeros
+         | ε
+
+
+operacao -> "+"
+          | "-"
+          | "*"
+          | "/"
+          | "++"
+          | "--"
+
+
+retorno -> "return" [TEXTO] 
