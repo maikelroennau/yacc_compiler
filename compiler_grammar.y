@@ -17,6 +17,8 @@
 %token REAL
 %token CARACTER
 %token RECEBE
+%token INCREMENTA
+%token DECREMENTA
 %type <sval> programa
 %type <sval> funcao_principal
 %type <sval> funcao_secundaria
@@ -53,10 +55,12 @@ inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 comandos : declaracao		{ $$ = $1; }
 		 |					{ $$ = ""; }
 
-declaracao : INTEIRO IDENTIFICADOR comandos 	{ $$ = "    int " + $2 + ";\n" + $3; }
-		   | REAL IDENTIFICADOR comandos		{ $$ = "    double " + $2 + ";\n" + $3; }
-		   | CARACTER IDENTIFICADOR comandos	{ $$ = "    char " + $2 + ";\n" + $3; }
-		   | IDENTIFICADOR RECEBE IDENTIFICADOR { $$ = "    " + $1 + " = " + $3 + ";\n"; }
+declaracao : INTEIRO IDENTIFICADOR comandos 								{ $$ = "    int " + $2 + ";\n" + $3; }
+		   | REAL IDENTIFICADOR comandos									{ $$ = "    double " + $2 + ";\n" + $3; }
+		   | CARACTER IDENTIFICADOR comandos								{ $$ = "    char " + $2 + ";\n" + $3; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR comandos					{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR INCREMENTA comandos 								{ $$ = "    " + $1 + "++;\n" + $3; }
+		   | IDENTIFICADOR DECREMENTA comandos 								{ $$ = "    " + $1 + "--;\n" + $3; }
 
 %%
 

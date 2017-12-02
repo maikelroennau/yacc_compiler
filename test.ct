@@ -20,4 +20,10 @@ funcao_principal {
   caracter funcoes
 
   i := soma
+  soma := i
+  soma++
+  i++
+  i--
+  soma--
+
 }
