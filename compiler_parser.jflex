@@ -31,8 +31,14 @@ caracter { return Parser.CARACTER; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
 		  return Parser.INCLUSAO_ARQUIVO; }
+
+
 "{"	{ return Parser.ABRE_CHAVES; }
 "}" { return Parser.FECHA_CHAVES; }
+"(" { return Parser.ABRE_PARENTESES; }
+")" { return Parser.FECHA_PARENTESES; }
+
+
 [a-zA-Z_][a-zA-Z0-9_]*	{ 
 		yyparser.yylval = new ParserVal(yytext());
 		return Parser.IDENTIFICADOR;

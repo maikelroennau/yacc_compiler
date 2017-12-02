@@ -8,6 +8,8 @@
 %token <sval> INCLUSAO_ARQUIVO
 %token ABRE_CHAVES
 %token FECHA_CHAVES
+%token ABRE_PARENTESES
+%token FECHA_PARENTESES
 %token FUNCAO_PRINCIPAL
 %token FUNCAO_SECUNDARIA
 %token INCLUIR
@@ -21,6 +23,7 @@
 %type <sval> inclusao
 %type <sval> comandos
 %type <sval> declaracao
+%type <sval> parametro
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -32,12 +35,16 @@ programa : inclusao programa			{ $$ = $1 + "\n" + $2; }
 
 funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 					{ $$ = "\nint main() {\n " + $3 + "}\n"; }
 
-funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_CHAVES comandos FECHA_CHAVES programa	{ $$ = "\nfunction " + $2 + " {\n" + $4 + "}\n" + $6; }
+funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_PARENTESES parametro FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES programa	{ $$ = "\nfunction " + $2 + "(" + $4 + ") {\n" + $7 + "}\n" + $9; }
 
 tipo : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	 | REAL IDENTIFICADOR	 	{ $$ = "double " + $2; }
 	 | CARACTER IDENTIFICADOR	{ $$ = "char " + $2; }
 
+parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
+	 	  | REAL IDENTIFICADOR	 	{ $$ = "double " + $2; }
+	      | CARACTER IDENTIFICADOR	{ $$ = "char " + $2; }
+	      | 					    { $$ = ""; }
 
 
 inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }

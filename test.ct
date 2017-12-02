@@ -1,14 +1,14 @@
 incluir <stdio.h>
 incluir <stdlib.h>
 
-funcao inteiro test {
+funcao inteiro test (inteiro a) {
   inteiro variavel
   real teste
   caracter teste_2
 }
 
 
-funcao inteiro test_2 {
+funcao caracter test_2 () {
   inteiro contador
 }
 
