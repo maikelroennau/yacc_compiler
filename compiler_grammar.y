@@ -36,9 +36,9 @@ programa : inclusao programa			{ $$ = $1 + "\n" + $2; }
 		 | funcao_secundaria programa	{ $$ = $1 + "\n" + $2; }
 	     |								{ $$ = ""; }
 
-funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 					{ $$ = "\nint main() {\n" + $3 + "}\n"; }
+funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 													{ $$ = "\nint main() {\n" + $3 + "}\n"; }
 
-funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_PARENTESES parametro FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES programa	{ $$ = "\nfunction " + $2 + "(" + $4 + ") {\n" + $7 + "}\n" + $9; }
+funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_PARENTESES parametro FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES { $$ = "\nfunction " + $2 + "(" + $4 + ") {\n" + $7 + "}\n"; }
 
 tipo : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	 | REAL IDENTIFICADOR	 	{ $$ = "double " + $2; }
