@@ -1,5 +1,10 @@
 # Compiled class file
 *.class
+*.java
+
+# Others
+yacc.*  
+ParserVal*
 
 # Log file
 *.log
