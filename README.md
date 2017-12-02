@@ -2,7 +2,7 @@
 Compiler built for fictional programming language.
 
 
-### Author
+## Author
 
 **Maikel Maciel Rönnau**  
 *Computer Scientist  
