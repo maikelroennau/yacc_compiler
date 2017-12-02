@@ -7,6 +7,11 @@ funcao inteiro test {
   caracter teste_2
 }
 
+
+funcao inteiro test_2 {
+  inteiro contador
+}
+
 funcao_principal {
   inteiro i
   inteiro soma
