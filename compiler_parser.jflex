@@ -13,13 +13,22 @@ import java.io.*;
 	public Yylex(Reader r, Parser yyparser){
 		this(r);
 		this.yyparser = yyparser;
-	}	
+	}
 
 %}
 
 NL = \n | \r | \r\n
 
 %%
+
+\/\/.* {
+		yyparser.yylval = new ParserVal(yytext());
+		return Parser.COMENTARIO; }
+
+\/\*.*\*\/ {
+		yyparser.yylval = new ParserVal(yytext());
+		return Parser.COMENTARIO_MULTIPLO; }
+
 
 funcao_principal 	{ return Parser.FUNCAO_PRINCIPAL; }
 funcao 				{ return Parser.FUNCAO_SECUNDARIA; }
@@ -49,8 +58,8 @@ caracter { return Parser.CARACTER; }
 "--" { return Parser.DECREMENTA; }
 
 
-[a-zA-Z_][a-zA-Z0-9_]*	{ 
+[a-zA-Z_][a-zA-Z0-9_]*	{
 		yyparser.yylval = new ParserVal(yytext());
-		return Parser.IDENTIFICADOR;
-	}
+		return Parser.IDENTIFICADOR; }
+
 {NL}|" "|\t	{  }
