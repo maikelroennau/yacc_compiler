@@ -63,6 +63,12 @@ funcao caracter geraFuncao () {
   }
 }
 
+funcao inteiro geraValores () {
+  inteiro retorno
+  retorno := (rand()%10+1)
+  retornar retorno
+}
+
 funcao inteiro test (inteiro a) {
   inteiro variavel
   real teste
