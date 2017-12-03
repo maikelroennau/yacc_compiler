@@ -10,6 +10,7 @@
 %token <sval> COMENTARIO_MULTIPLO
 %token <sval> NUMERO
 %token <sval> FIM
+%token <sval> LETRA
 
 %token ABRE_CHAVES
 %token FECHA_CHAVES
@@ -43,6 +44,7 @@
 
 %token PARA
 %token SE
+%token RETORNAR
 
 %type <sval> programa
 %type <sval> funcao_principal
@@ -86,8 +88,13 @@ parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 
 inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 
-comandos : declaracao		{ $$ = $1; }
-		 |					{ $$ = ""; }
+comandos : declaracao																			    { $$ = $1; }
+		 | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | RETORNAR IDENTIFICADOR																	{ $$ = "    return " + $2 + ";\n"; }
+		 | RETORNAR NUMERO																			{ $$ = "    return " + $2 + ";\n"; }
+		 | RETORNAR LETRA																			{ $$ = "    return " + $2 + ";\n"; }
+		 |																							{ $$ = ""; }
 
 declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2 + ";\n" + $3; }
 		   | REAL IDENTIFICADOR comandos															{ $$ = "    double " + $2 + ";\n" + $3; }
@@ -96,31 +103,29 @@ declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2
 		   | IDENTIFICADOR INCREMENTA comandos 														{ $$ = "    " + $1 + "++;\n" + $3; }
 		   | IDENTIFICADOR DECREMENTA comandos 														{ $$ = "    " + $1 + "--;\n" + $3; }
 		   | IDENTIFICADOR comparacao comandos														{ $$ = "    " + $1 + $2 + "\n" + $3; }
-		   | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
-		   | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
 
-operacao : IDENTIFICADOR 								{ $$ = $1; }
-		 | NUMERO										{ $$ = $1; }
-         | IDENTIFICADOR SOMA IDENTIFICADOR 			{ $$ = $1 + " + " + $3; }
-		 | IDENTIFICADOR SOMA NUMERO 					{ $$ = $1 + " + " + $3; }
-		 | IDENTIFICADOR SUTRACAO IDENTIFICADOR 		{ $$ = $1 + " - " + $3; }
-		 | IDENTIFICADOR SUTRACAO NUMERO		 		{ $$ = $1 + " - " + $3; }
-		 | IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR 	{ $$ = $1 + " * " + $3; }
-		 | IDENTIFICADOR MULTIPLICACAO NUMERO		 	{ $$ = $1 + " * " + $3; }
-		 | IDENTIFICADOR DIVISAO IDENTIFICADOR 			{ $$ = $1 + " / " + $3; }
-		 | IDENTIFICADOR DIVISAO NUMERO 				{ $$ = $1 + " / " + $3; }
-		 | NUMERO SOMA IDENTIFICADOR					{ $$ = $1 + " + " + $3; }
-		 | NUMERO SOMA NUMERO							{ $$ = $1 + " + " + $3; }
-		 | NUMERO SUTRACAO IDENTIFICADOR				{ $$ = $1 + " - " + $3; }
-		 | NUMERO SUTRACAO NUMERO						{ $$ = $1 + " - " + $3; }
-		 | NUMERO MULTIPLICACAO IDENTIFICADOR			{ $$ = $1 + " * " + $3; }
-		 | NUMERO MULTIPLICACAO NUMERO					{ $$ = $1 + " * " + $3; }
-		 | NUMERO DIVISAO IDENTIFICADOR					{ $$ = $1 + " / " + $3; }
-		 | NUMERO DIVISAO NUMERO						{ $$ = $1 + " / " + $3; }
-		 | IDENTIFICADOR MODULO	IDENTIFICADOR			{ $$ = $1 + " % " + $3; }
-		 | IDENTIFICADOR MODULO	NUMERO					{ $$ = $1 + " % " + $3; }
-		 | NUMERO MODULO IDENTIFICADOR					{ $$ = $1 + " % " + $3; }
-		 | NUMERO MODULO NUMERO							{ $$ = $1 + " % " + $3; }
+operacao : IDENTIFICADOR 									{ $$ = $1; }
+		 | NUMERO											{ $$ = $1; }
+         | IDENTIFICADOR SOMA IDENTIFICADOR 				{ $$ = $1 + " + " + $3; }
+		 | IDENTIFICADOR SOMA NUMERO 						{ $$ = $1 + " + " + $3; }
+		 | IDENTIFICADOR SUTRACAO IDENTIFICADOR		 		{ $$ = $1 + " - " + $3; }
+		 | IDENTIFICADOR SUTRACAO NUMERO		 			{ $$ = $1 + " - " + $3; }
+		 | IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR 		{ $$ = $1 + " * " + $3; }
+		 | IDENTIFICADOR MULTIPLICACAO NUMERO			 	{ $$ = $1 + " * " + $3; }
+		 | IDENTIFICADOR DIVISAO IDENTIFICADOR 				{ $$ = $1 + " / " + $3; }
+		 | IDENTIFICADOR DIVISAO NUMERO 					{ $$ = $1 + " / " + $3; }
+		 | NUMERO SOMA IDENTIFICADOR						{ $$ = $1 + " + " + $3; }
+		 | NUMERO SOMA NUMERO								{ $$ = $1 + " + " + $3; }
+		 | NUMERO SUTRACAO IDENTIFICADOR					{ $$ = $1 + " - " + $3; }
+		 | NUMERO SUTRACAO NUMERO							{ $$ = $1 + " - " + $3; }
+		 | NUMERO MULTIPLICACAO IDENTIFICADOR				{ $$ = $1 + " * " + $3; }
+		 | NUMERO MULTIPLICACAO NUMERO						{ $$ = $1 + " * " + $3; }
+		 | NUMERO DIVISAO IDENTIFICADOR						{ $$ = $1 + " / " + $3; }
+		 | NUMERO DIVISAO NUMERO							{ $$ = $1 + " / " + $3; }
+		 | IDENTIFICADOR MODULO	IDENTIFICADOR				{ $$ = $1 + " % " + $3; }
+		 | IDENTIFICADOR MODULO	NUMERO						{ $$ = $1 + " % " + $3; }
+		 | NUMERO MODULO IDENTIFICADOR						{ $$ = $1 + " % " + $3; }
+		 | NUMERO MODULO NUMERO								{ $$ = $1 + " % " + $3; }
 
 
 comparacao : MENOR IDENTIFICADOR 		{ $$ = " < " + $2; }
@@ -148,9 +153,8 @@ for : IDENTIFICADOR RECEBE IDENTIFICADOR FIM for		{ $$ = $1 + " = " + $3 + "; " 
 
 
 if : IDENTIFICADOR comparacao							{ $$ = $1 + $2; }
-   | IDENTIFICADOR operacao comparacao					{ $$ = $1 + $2 + $3; }
    | NUMERO comparacao									{ $$ = $1 + $2; }
-   | NUMERO operacao comparacao							{ $$ = $1 + $2 + $3; }
+   | operacao comparacao								{ $$ = $1 + $2; }
    | NUMERO												{ $$ = $1; }
    | IDENTIFICADOR										{ $$ = $1; }
 

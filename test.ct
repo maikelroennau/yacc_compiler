@@ -15,11 +15,14 @@ funcao real media (inteiro a) {
   quantidade := 0
 
   para (i := 1; i <= a; i++) {
-    se (a == 0) {
+    se (a%i == 0) {
       quantidade++
       soma := soma + i
     }
   }
+
+  retorno := soma / quantidade
+  retornar 'a'
 }
 
 funcao inteiro test (inteiro a) {

@@ -38,8 +38,9 @@ inteiro { return Parser.INTEIRO; }
 real { return Parser.REAL; }
 caracter { return Parser.CARACTER; }
 
-para { return Parser.PARA; }
-se 	 { return Parser.SE; }
+para 		{ return Parser.PARA; }
+se 	 		{ return Parser.SE; }
+retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
 		  return Parser.INCLUSAO_ARQUIVO; }
@@ -51,8 +52,12 @@ se 	 { return Parser.SE; }
 ")" { return Parser.FECHA_PARENTESES; }
 
 [0-9]* {
-		yyparser.yylval = new ParserVal(yytext());
-		return Parser.NUMERO; }
+	yyparser.yylval = new ParserVal(yytext());
+	return Parser.NUMERO; }
+
+(')[a-zA-Z](') {
+	yyparser.yylval = new ParserVal(yytext());
+	return Parser.LETRA; }
 
 "+"  { return Parser.SOMA; }
 "-"  { return Parser.SUTRACAO; }
@@ -73,7 +78,7 @@ se 	 { return Parser.SE; }
 ";"  { return Parser.FIM; }
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
-		yyparser.yylval = new ParserVal(yytext());
-		return Parser.IDENTIFICADOR; }
+	yyparser.yylval = new ParserVal(yytext());
+	return Parser.IDENTIFICADOR; }
 
 {NL}|" "|\t	{  }
