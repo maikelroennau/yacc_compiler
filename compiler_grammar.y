@@ -60,6 +60,8 @@
 %type <sval> comparacao
 %type <sval> for
 %type <sval> if
+%type <sval> argumento
+%type <sval> concatenacao
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -86,6 +88,12 @@ parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	      | CARACTER IDENTIFICADOR	{ $$ = "char " + $2; }
 	      | 					    { $$ = ""; }
 
+argumento : IDENTIFICADOR           { $$ = $1; }
+		  | NUMERO					{ $$ = $1; }
+		  | LETRA					{ $$ = $1; }
+		  | operacao				{ $$ = $1; }
+		  |							{ $$ = ""; }
+
 
 inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 
@@ -99,13 +107,23 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | RETORNAR LETRA																												{ $$ = "    return " + $2 + ";\n"; }
 		 |																																{ $$ = ""; }
 
-declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2 + ";\n" + $3; }
-		   | REAL IDENTIFICADOR comandos															{ $$ = "    double " + $2 + ";\n" + $3; }
-		   | CARACTER IDENTIFICADOR comandos														{ $$ = "    char " + $2 + ";\n" + $3; }
-		   | IDENTIFICADOR RECEBE operacao comandos													{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
-		   | IDENTIFICADOR INCREMENTA comandos 														{ $$ = "    " + $1 + "++;\n" + $3; }
-		   | IDENTIFICADOR DECREMENTA comandos 														{ $$ = "    " + $1 + "--;\n" + $3; }
-		   | IDENTIFICADOR comparacao comandos														{ $$ = "    " + $1 + $2 + "\n" + $3; }
+
+declaracao : INTEIRO IDENTIFICADOR comandos					 																	{ $$ = "    int " + $2 + ";\n" + $3; }
+		   | REAL IDENTIFICADOR comandos																						{ $$ = "    double " + $2 + ";\n" + $3; }
+		   | CARACTER IDENTIFICADOR comandos																					{ $$ = "    char " + $2 + ";\n" + $3; }
+		   | IDENTIFICADOR RECEBE operacao comandos																				{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR INCREMENTA comandos 																					{ $$ = "    " + $1 + "++;\n" + $3; }
+		   | IDENTIFICADOR DECREMENTA comandos 																					{ $$ = "    " + $1 + "--;\n" + $3; }
+		   | IDENTIFICADOR comparacao comandos																					{ $$ = "    " + $1 + $2 + "\n" + $3; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n"; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  							 	{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 	{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos	{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos	{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ");\n" + $7; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos { $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
+		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos { $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
+   		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos { $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
+
 
 operacao : IDENTIFICADOR 									{ $$ = $1; }
 		 | NUMERO											{ $$ = $1; }
@@ -129,6 +147,19 @@ operacao : IDENTIFICADOR 									{ $$ = $1; }
 		 | IDENTIFICADOR MODULO	NUMERO						{ $$ = $1 + " % " + $3; }
 		 | NUMERO MODULO IDENTIFICADOR						{ $$ = $1 + " % " + $3; }
 		 | NUMERO MODULO NUMERO								{ $$ = $1 + " % " + $3; }
+
+
+concatenacao : SOMA NUMERO concatenacao					            { $$ = " + " + $2 + $3; }
+		     | SOMA IDENTIFICADOR concatenacao			            { $$ = " + " + $2 + $3; }
+		     | SUTRACAO NUMERO concatenacao				            { $$ = " - " + $2 + $3; }
+		 	 | SUTRACAO IDENTIFICADOR concatenacao		            { $$ = " - " + $2 + $3; }
+	 		 | MULTIPLICACAO NUMERO concatenacao		            { $$ = " * " + $2 + $3; }
+	  	     | MULTIPLICACAO IDENTIFICADOR concatenacao	            { $$ = " * " + $2 + $3; }
+			 | DIVISAO NUMERO concatenacao				            { $$ = " / " + $2 + $3; }
+			 | DIVISAO IDENTIFICADOR concatenacao		            { $$ = " / " + $2 + $3; }
+			 | MODULO NUMERO concatenacao				            { $$ = " % " + $2 + $3; }
+		     | MODULO IDENTIFICADOR concatenacao		            { $$ = " % " + $2 + $3; }
+			 | 														{ $$ = ""; }
 
 
 comparacao : MENOR IDENTIFICADOR 		{ $$ = " < " + $2; }
