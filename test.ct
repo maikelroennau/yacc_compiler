@@ -24,6 +24,15 @@ funcao inteiro test (inteiro a) {
   inteiro variavel
   real teste
   caracter teste_2
+
+  para (variavel := 0; variavel <= 10; variavel++) {
+    teste := teste * 2
+    teste := 1 / 2
+    teste := 1 + 2
+    teste := 1 - 2
+    teste := 9 * 9
+    teste := 4 * teste
+  }
 }
 
 funcao caracter test_2 () {
@@ -45,7 +54,7 @@ funcao_principal {
   soma--
   soma := soma + soma
   i := soma - i
-  i := soma * i
+  i := soma * 1
   soma := i / soma
   i := 0
   soma := 0

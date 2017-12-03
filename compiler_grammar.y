@@ -97,9 +97,22 @@ declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2
 operacao : IDENTIFICADOR 								{ $$ = $1; }
 		 | NUMERO										{ $$ = $1; }
          | IDENTIFICADOR SOMA IDENTIFICADOR 			{ $$ = $1 + " + " + $3; }
+		 | IDENTIFICADOR SOMA NUMERO 					{ $$ = $1 + " + " + $3; }
 		 | IDENTIFICADOR SUTRACAO IDENTIFICADOR 		{ $$ = $1 + " - " + $3; }
+		 | IDENTIFICADOR SUTRACAO NUMERO		 		{ $$ = $1 + " - " + $3; }
 		 | IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR 	{ $$ = $1 + " * " + $3; }
+		 | IDENTIFICADOR MULTIPLICACAO NUMERO		 	{ $$ = $1 + " * " + $3; }
 		 | IDENTIFICADOR DIVISAO IDENTIFICADOR 			{ $$ = $1 + " / " + $3; }
+		 | IDENTIFICADOR DIVISAO NUMERO 				{ $$ = $1 + " / " + $3; }
+		 | NUMERO SOMA IDENTIFICADOR					{ $$ = $1 + " + " + $3; }
+		 | NUMERO SOMA NUMERO							{ $$ = $1 + " + " + $3; }
+		 | NUMERO SUTRACAO IDENTIFICADOR				{ $$ = $1 + " - " + $3; }
+		 | NUMERO SUTRACAO NUMERO						{ $$ = $1 + " - " + $3; }
+		 | NUMERO MULTIPLICACAO IDENTIFICADOR			{ $$ = $1 + " * " + $3; }
+		 | NUMERO MULTIPLICACAO NUMERO					{ $$ = $1 + " * " + $3; }
+		 | NUMERO DIVISAO IDENTIFICADOR					{ $$ = $1 + " / " + $3; }
+		 | NUMERO DIVISAO NUMERO						{ $$ = $1 + " / " + $3; }
+
 
 comparacao : MENOR IDENTIFICADOR 		{ $$ = "<" + $2; }
 		   | MENOR NUMERO 		 		{ $$ = "<" + $2; }
