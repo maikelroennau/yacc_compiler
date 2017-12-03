@@ -77,8 +77,8 @@ funcao_principal {
 
   i := 0
   enquanto (i < tamanho) {
-    funcoes[i]=geraFuncao()
-    valores[i]=geraValores()
+    funcoes[i]:=geraFuncao()
+    valores[i]:=geraValores()
     i++  
   }
 

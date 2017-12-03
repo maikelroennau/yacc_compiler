@@ -127,6 +127,10 @@ declaracao : INTEIRO IDENTIFICADOR array comandos					 																				{ $$ 
 		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 									{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
 		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos 				{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
    		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos 	{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
+		   | IDENTIFICADOR array RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + $2 + " = " + $4 + "(" + $6 + ");\n" + $8; }
+		   | IDENTIFICADOR array RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 										{ $$ = "    " + $1 + $2 + " = " + $4 + "(" + $6 + ")" + $8 + ";\n" + $9; }
+		   | IDENTIFICADOR array RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos 					{ $$ = "    " + $1 + $2 + " = (" + $5 + "(" + $7 + "));\n" + $10; }
+   		   | IDENTIFICADOR array RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos 	{ $$ = "    " + $1 + $2 + " = (" + $5 + "(" + $7 + ")" + $9 + ");\n" + $11; }
 
 
 operacao : IDENTIFICADOR 									{ $$ = $1; }
