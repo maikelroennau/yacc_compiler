@@ -65,7 +65,7 @@ retornar 	{ return Parser.RETORNAR; }
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.NUMERO; }
 
-(')[a-zA-Z0-9](') {
+('|\")[a-zA-Z0-9]('|\") {
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.LITERAL; }
 
