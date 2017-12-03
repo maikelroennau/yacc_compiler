@@ -1,2 +1,2 @@
 cls
-java Parser test.ct
+java Parser %1
