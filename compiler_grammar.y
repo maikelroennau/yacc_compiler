@@ -115,6 +115,7 @@ declaracao : INTEIRO IDENTIFICADOR array comandos					 																				{ $$ 
 		   | REAL IDENTIFICADOR array comandos																										{ $$ = "    double " + $2 + $3 + ";\n" + $4; }
 		   | CARACTER IDENTIFICADOR array comandos																									{ $$ = "    char " + $2 + $3 + ";\n" + $4; }
 		   | IDENTIFICADOR RECEBE operacao comandos																									{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR array RECEBE operacao comandos																							{ $$ = "    " + $1 + $2 + " = " + $4 + ";\n" + $5; }
 		   | IDENTIFICADOR INCREMENTA comandos 																										{ $$ = "    " + $1 + "++;\n" + $3; }
 		   | IDENTIFICADOR DECREMENTA comandos 																										{ $$ = "    " + $1 + "--;\n" + $3; }
 		   | IDENTIFICADOR comparacao comandos																										{ $$ = "    " + $1 + $2 + "\n" + $3; }
