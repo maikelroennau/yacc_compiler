@@ -47,6 +47,7 @@
 %token PARA
 %token SE
 %token SENAO
+%token ENQUANTO
 %token RETORNAR
 
 %type <sval> programa
@@ -105,6 +106,7 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos											{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
 		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES SENAO ABRE_CHAVES comandos FECHA_CHAVES comandos	{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    } senao {\n    " + $10 + "    }\n" + $12; }
 		 | SE ABRE_PARENTESES if FECHA_PARENTESES comandos				 																{ $$ = "    if("  + $3 + ")\n    " + $5; }
+		 | ENQUANTO ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos										{ $$ = "    enquanto(" + $3 + ") {\n    "+ $6 + "    }\n" + $8; }
 		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR LETRA																												{ $$ = "    return " + $2 + ";\n"; }

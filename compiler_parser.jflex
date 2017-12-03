@@ -41,6 +41,7 @@ caracter { return Parser.CARACTER; }
 para 		{ return Parser.PARA; }
 se 	 		{ return Parser.SE; }
 senao		{ return Parser.SENAO; }
+enquanto	{ return Parser.ENQUANTO; }
 retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
