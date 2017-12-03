@@ -39,6 +39,7 @@ real { return Parser.REAL; }
 caracter { return Parser.CARACTER; }
 
 para { return Parser.PARA; }
+se 	 { return Parser.SE; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
 		  return Parser.INCLUSAO_ARQUIVO; }
@@ -57,6 +58,7 @@ para { return Parser.PARA; }
 "-"  { return Parser.SUTRACAO; }
 "*"  { return Parser.MULTIPLICACAO; }
 "/"  { return Parser.DIVISAO; }
+"%"  { return Parser.MODULO; }
 
 ":=" { return Parser.RECEBE; }
 "++" { return Parser.INCREMENTA; }
@@ -66,6 +68,7 @@ para { return Parser.PARA; }
 "<=" { return Parser.MENOR_IGUAL; }
 ">"  { return Parser.MAIOR; }
 ">=" { return Parser.MAIOR_IGUAL; }
+"==" { return Parser.IGUAL; }
 "!=" { return Parser.DIFERENTE; }
 ";"  { return Parser.FIM; }
 

@@ -15,8 +15,10 @@ funcao real media (inteiro a) {
   quantidade := 0
 
   para (i := 1; i <= a; i++) {
-    quantidade++
-    soma := soma + i
+    se (a == 0) {
+      quantidade++
+      soma := soma + i
+    }
   }
 }
 

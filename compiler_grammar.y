@@ -32,14 +32,17 @@
 %token SUTRACAO
 %token MULTIPLICACAO
 %token DIVISAO
+%token MODULO
 
 %token MENOR
 %token MENOR_IGUAL
 %token MAIOR
 %token MAIOR_IGUAL
+%token IGUAL
 %token DIFERENTE
 
 %token PARA
+%token SE
 
 %type <sval> programa
 %type <sval> funcao_principal
@@ -53,6 +56,7 @@
 %type <sval> comentario
 %type <sval> comparacao
 %type <sval> for
+%type <sval> if
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -93,6 +97,7 @@ declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2
 		   | IDENTIFICADOR DECREMENTA comandos 														{ $$ = "    " + $1 + "--;\n" + $3; }
 		   | IDENTIFICADOR comparacao comandos														{ $$ = "    " + $1 + $2 + "\n" + $3; }
 		   | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		   | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
 
 operacao : IDENTIFICADOR 								{ $$ = $1; }
 		 | NUMERO										{ $$ = $1; }
@@ -112,25 +117,42 @@ operacao : IDENTIFICADOR 								{ $$ = $1; }
 		 | NUMERO MULTIPLICACAO NUMERO					{ $$ = $1 + " * " + $3; }
 		 | NUMERO DIVISAO IDENTIFICADOR					{ $$ = $1 + " / " + $3; }
 		 | NUMERO DIVISAO NUMERO						{ $$ = $1 + " / " + $3; }
+		 | IDENTIFICADOR MODULO	IDENTIFICADOR			{ $$ = $1 + " % " + $3; }
+		 | IDENTIFICADOR MODULO	NUMERO					{ $$ = $1 + " % " + $3; }
+		 | NUMERO MODULO IDENTIFICADOR					{ $$ = $1 + " % " + $3; }
+		 | NUMERO MODULO NUMERO							{ $$ = $1 + " % " + $3; }
 
 
-comparacao : MENOR IDENTIFICADOR 		{ $$ = "<" + $2; }
-		   | MENOR NUMERO 		 		{ $$ = "<" + $2; }
-		   | MENOR_IGUAL IDENTIFICADOR 	{ $$ = "<=" + $2; }
-		   | MENOR_IGUAL NUMERO 		{ $$ = "<=" + $2; }
-		   | MAIOR IDENTIFICADOR 		{ $$ = ">" + $2; }
-		   | MAIOR NUMERO 		 		{ $$ = ">" + $2; }
-		   | MAIOR_IGUAL IDENTIFICADOR 	{ $$ = ">=" + $2; }
-		   | MAIOR_IGUAL NUMERO 		{ $$ = ">=" + $2; }
-		   | DIFERENTE IDENTIFICADOR 	{ $$ = "!=" + $2; }
-		   | DIFERENTE NUMERO			{ $$ = "!=" + $2; }
+comparacao : MENOR IDENTIFICADOR 		{ $$ = " < " + $2; }
+		   | MENOR NUMERO 		 		{ $$ = " < " + $2; }
+		   | MENOR_IGUAL IDENTIFICADOR 	{ $$ = " <= " + $2; }
+		   | MENOR_IGUAL NUMERO 		{ $$ = " <= " + $2; }
+		   | MAIOR IDENTIFICADOR 		{ $$ = " > " + $2; }
+		   | MAIOR NUMERO 		 		{ $$ = " > " + $2; }
+		   | MAIOR_IGUAL IDENTIFICADOR 	{ $$ = " >= " + $2; }
+		   | MAIOR_IGUAL NUMERO 		{ $$ = " >= " + $2; }
+		   | IGUAL IDENTIFICADOR	 	{ $$ = " == " + $2; }
+		   | IGUAL NUMERO				{ $$ = " == " + $2; }
+		   | DIFERENTE IDENTIFICADOR 	{ $$ = " != " + $2; }
+		   | DIFERENTE NUMERO			{ $$ = " != " + $2; }
+
 
 for : IDENTIFICADOR RECEBE IDENTIFICADOR FIM for		{ $$ = $1 + " = " + $3 + "; " + $5; }
 	| IDENTIFICADOR RECEBE operacao FIM for				{ $$ = $1 + " = " + $3 + "; " + $5; }
 	| IDENTIFICADOR comparacao FIM for 					{ $$ = $1 + $2 + "; " + $4; }
+	| IDENTIFICADOR RECEBE NUMERO FIM for				{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| NUMERO comparacao FIM for 						{ $$ = $1 + $2 + "; " + $4; }
 	| IDENTIFICADOR INCREMENTA comandos 				{ $$ = $1 + "++" + $3; }
 	| IDENTIFICADOR DECREMENTA comandos 				{ $$ = $1 + "--" + $3; }
 	| 													{ $$ = ""; }
+
+
+if : IDENTIFICADOR comparacao							{ $$ = $1 + $2; }
+   | IDENTIFICADOR operacao comparacao					{ $$ = $1 + $2 + $3; }
+   | NUMERO comparacao									{ $$ = $1 + $2; }
+   | NUMERO operacao comparacao							{ $$ = $1 + $2 + $3; }
+   | NUMERO												{ $$ = $1; }
+   | IDENTIFICADOR										{ $$ = $1; }
 
 
 %%
