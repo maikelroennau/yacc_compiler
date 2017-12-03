@@ -44,6 +44,7 @@
 
 %token PARA
 %token SE
+%token SENAO
 %token RETORNAR
 
 %type <sval> programa
@@ -88,14 +89,15 @@ parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 
 inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 
-comandos : declaracao																			    { $$ = $1; }
-		 | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
-		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
-		 | SE ABRE_PARENTESES if FECHA_PARENTESES comandos											{ $$ = "    if("  + $3 + ")\n    " + $5; }
-		 | RETORNAR IDENTIFICADOR																	{ $$ = "    return " + $2 + ";\n"; }
-		 | RETORNAR NUMERO																			{ $$ = "    return " + $2 + ";\n"; }
-		 | RETORNAR LETRA																			{ $$ = "    return " + $2 + ";\n"; }
-		 |																							{ $$ = ""; }
+comandos : declaracao																				   									{ $$ = $1; }
+		 | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos				 							{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos											{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES SENAO ABRE_CHAVES comandos FECHA_CHAVES comandos	{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    } senao {\n    " + $10 + "    }\n" + $12; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES comandos				 																{ $$ = "    if("  + $3 + ")\n    " + $5; }
+		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
+		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
+		 | RETORNAR LETRA																												{ $$ = "    return " + $2 + ";\n"; }
+		 |																																{ $$ = ""; }
 
 declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2 + ";\n" + $3; }
 		   | REAL IDENTIFICADOR comandos															{ $$ = "    double " + $2 + ";\n" + $3; }
