@@ -45,6 +45,7 @@
 %token DIFERENTE
 
 %token DOIS_PONTOS
+%token VIRGULA
 
 %token PARA
 %token SE
@@ -101,12 +102,18 @@ parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	      | CARACTER IDENTIFICADOR	{ $$ = "char " + $2; }
 	      | 					    { $$ = ""; }
 
-argumento : IDENTIFICADOR           { $$ = $1; }
-		  | IDENTIFICADOR array		{ $$ = $1 + $2; }
-		  | NUMERO					{ $$ = $1; }
-		  | LITERAL					{ $$ = $1; }
-		  | operacao				{ $$ = $1; }
-		  |							{ $$ = ""; }
+argumento : IDENTIFICADOR  				        	{ $$ = $1; }
+		  | IDENTIFICADOR array						{ $$ = $1 + $2; }
+		  | NUMERO									{ $$ = $1; }
+		  | LITERAL									{ $$ = $1; }
+		  | operacao								{ $$ = $1; }
+		  | if										{ $$ = $1; }
+		  | IDENTIFICADOR VIRGULA argumento         { $$ = $1 + ", " + $3; }
+		  | IDENTIFICADOR array VIRGULA argumento	{ $$ = $1 + $2 + ", " + $4; }
+		  | NUMERO VIRGULA argumento				{ $$ = $1 + ", " + $3; }
+		  | LITERAL VIRGULA	argumento				{ $$ = $1 + ", " + $3; }
+		  | operacao VIRGULA argumento				{ $$ = $1 + ", " + $3; }
+		  |											{ $$ = ""; }
 
 
 inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }

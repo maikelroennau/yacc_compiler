@@ -48,6 +48,7 @@ caso		{ return Parser.CASO; }
 opcao		{ return Parser.OPCAO; }
 fim_opcao	{ return Parser.FIM_OPCAO; }
 :			{ return Parser.DOIS_PONTOS; }
+,			{ return Parser.VIRGULA; }
 retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
@@ -65,7 +66,8 @@ retornar 	{ return Parser.RETORNAR; }
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.NUMERO; }
 
-('|\")[a-zA-Z0-9]('|\") {
+
+((')[a-zA-Z0-9]*('))|((\")[a-zA-Z0-9]*(\")) {
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.LITERAL; }
 
