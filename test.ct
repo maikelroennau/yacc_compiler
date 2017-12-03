@@ -1,7 +1,7 @@
 // Inclusao de Bibliotecas
 
 incluir <stdio.h>
-incluir <stdlib.h>
+incluir <math.h>
 
 // Funcao media que retorna um real
 
@@ -13,8 +13,8 @@ funcao real media (inteiro a) {
 
   soma := 0
   quantidade := 0
-
-  para (i := 1; i <= a; i++) {
+  
+  para (i := 1; i <= a; i++) {  
     se (a%i == 0) {
       quantidade++
       soma := soma + i
@@ -22,7 +22,45 @@ funcao real media (inteiro a) {
   }
 
   retorno := soma / quantidade
-  retornar 'a'
+  retornar retorno
+}
+
+funcao inteiro soma (inteiro a) {
+  inteiro i
+  inteiro somatorio
+
+  somatorio := 0
+  
+  para (i:=1;i<=a;i++) {
+    se (a%i==0)
+      somatorio:=somatorio+i
+  }
+  retornar somatorio
+}
+
+funcao inteiro fatorial (inteiro a) {
+  inteiro i
+  inteiro fat
+
+  fat := 1
+  para (i:=1;i<=a;i++) {
+    fat:=fat*i
+  }
+  retornar fat
+}
+
+funcao caracter geraFuncao () {
+  inteiro valor
+  valor := rand()%10
+  se (valor<=3) {
+    retornar 'm'
+  } senao {
+    se (valor<=6) {
+      retornar 's'
+    } senao {
+      retornar 'f'
+    }
+  }
 }
 
 funcao inteiro test (inteiro a) {
