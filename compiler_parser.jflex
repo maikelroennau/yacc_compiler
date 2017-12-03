@@ -44,6 +44,10 @@ senao		{ return Parser.SENAO; }
 enquanto	{ return Parser.ENQUANTO; }
 faca		{ return Parser.FACA; }
 ate			{ return Parser.ATE; }
+caso		{ return Parser.CASO; }
+opcao		{ return Parser.OPCAO; }
+fim_opcao	{ return Parser.FIM_OPCAO; }
+:			{ return Parser.DOIS_PONTOS; }
 retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
@@ -61,9 +65,9 @@ retornar 	{ return Parser.RETORNAR; }
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.NUMERO; }
 
-(')[a-zA-Z](') {
+(')[a-zA-Z0-9](') {
 	yyparser.yylval = new ParserVal(yytext());
-	return Parser.LETRA; }
+	return Parser.LITERAL; }
 
 "+"  { return Parser.SOMA; }
 "-"  { return Parser.SUTRACAO; }

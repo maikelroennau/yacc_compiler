@@ -10,7 +10,7 @@
 %token <sval> COMENTARIO_MULTIPLO
 %token <sval> NUMERO
 %token <sval> FIM
-%token <sval> LETRA
+%token <sval> LITERAL
 
 %token ABRE_CHAVES
 %token FECHA_CHAVES
@@ -44,12 +44,17 @@
 %token IGUAL
 %token DIFERENTE
 
+%token DOIS_PONTOS
+
 %token PARA
 %token SE
 %token SENAO
 %token ENQUANTO
 %token FACA
 %token ATE
+%token CASO
+%token OPCAO
+%token FIM_OPCAO
 %token RETORNAR
 
 %type <sval> programa
@@ -68,6 +73,8 @@
 %type <sval> argumento
 %type <sval> concatenacao
 %type <sval> array
+%type <sval> condicao
+%type <sval> opcao
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -95,8 +102,9 @@ parametro : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	      | 					    { $$ = ""; }
 
 argumento : IDENTIFICADOR           { $$ = $1; }
+		  | IDENTIFICADOR array		{ $$ = $1 + $2; }
 		  | NUMERO					{ $$ = $1; }
-		  | LETRA					{ $$ = $1; }
+		  | LITERAL					{ $$ = $1; }
 		  | operacao				{ $$ = $1; }
 		  |							{ $$ = ""; }
 
@@ -109,10 +117,11 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES SENAO ABRE_CHAVES comandos FECHA_CHAVES comandos	{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    } senao {\n    " + $10 + "    }\n" + $12; }
 		 | SE ABRE_PARENTESES if FECHA_PARENTESES comandos				 																{ $$ = "    if("  + $3 + ")\n    " + $5; }
 		 | ENQUANTO ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos										{ $$ = "    while(" + $3 + ") {\n    "+ $6 + "    }\n" + $8; }
-		 | FACA ABRE_CHAVES comandos FECHA_CHAVES ATE ABRE_PARENTESES if FECHA_PARENTESES comandos										{ $$ = "    do{\n    " + $3 + "} while(" + $7 + ");\n" + $9; }		 
+		 | FACA ABRE_CHAVES comandos FECHA_CHAVES ATE ABRE_PARENTESES if FECHA_PARENTESES comandos										{ $$ = "    do{\n    " + $3 + "} while(" + $7 + ");\n" + $9; }
+		 | CASO ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES opcao FECHA_CHAVES comandos 	{ $$ = "    switch(" + $3 + ") {\n    " + $6 + "}\n" + $8; }
 		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
-		 | RETORNAR LETRA																												{ $$ = "    return " + $2 + ";\n"; }
+		 | RETORNAR LITERAL																												{ $$ = "    return " + $2 + ";\n"; }
 		 |																																{ $$ = ""; }
 
 
@@ -208,6 +217,18 @@ if : IDENTIFICADOR comparacao								{ $$ = $1 + $2; }
 array : ABRE_COLCHETES IDENTIFICADOR FECHA_COLCHETES		{ $$ = "[" + $2 + "]"; }
 	  | ABRE_COLCHETES NUMERO FECHA_COLCHETES				{ $$ = "[" + $2 + "]"; }
 	  | 													{ $$ = ""; }
+
+
+condicao : IDENTIFICADOR array	{ $$ = $1 + $2; }
+		 | NUMERO 				{ $$ = $1; }
+		 | LITERAL 				{ $$ = $1; }
+		 | if 					{ $$ = $1; }
+
+
+opcao : OPCAO LITERAL DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | OPCAO NUMERO DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | OPCAO IDENTIFICADOR DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | 			{ $$ = ""; }
 
 
 %%
