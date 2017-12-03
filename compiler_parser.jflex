@@ -38,6 +38,8 @@ inteiro { return Parser.INTEIRO; }
 real { return Parser.REAL; }
 caracter { return Parser.CARACTER; }
 
+para { return Parser.PARA; }
+
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
 		  return Parser.INCLUSAO_ARQUIVO; }
 
@@ -60,7 +62,12 @@ caracter { return Parser.CARACTER; }
 "++" { return Parser.INCREMENTA; }
 "--" { return Parser.DECREMENTA; }
 
-
+"<"  { return Parser.MENOR; }
+"<=" { return Parser.MENOR_IGUAL; }
+">"  { return Parser.MAIOR; }
+">=" { return Parser.MAIOR_IGUAL; }
+"!=" { return Parser.DIFERENTE; }
+";"  { return Parser.FIM; }
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
 		yyparser.yylval = new ParserVal(yytext());

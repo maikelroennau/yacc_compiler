@@ -9,33 +9,50 @@
 %token <sval> COMENTARIO
 %token <sval> COMENTARIO_MULTIPLO
 %token <sval> NUMERO
+%token <sval> FIM
+
 %token ABRE_CHAVES
 %token FECHA_CHAVES
 %token ABRE_PARENTESES
 %token FECHA_PARENTESES
+
 %token FUNCAO_PRINCIPAL
 %token FUNCAO_SECUNDARIA
 %token INCLUIR
+
 %token INTEIRO
 %token REAL
 %token CARACTER
+
 %token RECEBE
 %token INCREMENTA
 %token DECREMENTA
+
 %token SOMA
 %token SUTRACAO
 %token MULTIPLICACAO
 %token DIVISAO
+
+%token MENOR
+%token MENOR_IGUAL
+%token MAIOR
+%token MAIOR_IGUAL
+%token DIFERENTE
+
+%token PARA
+
 %type <sval> programa
 %type <sval> funcao_principal
 %type <sval> funcao_secundaria
-%type <sval> tipo
 %type <sval> inclusao
+%type <sval> tipo
 %type <sval> comandos
 %type <sval> declaracao
 %type <sval> parametro
 %type <sval> operacao
 %type <sval> comentario
+%type <sval> comparacao
+%type <sval> for
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -68,12 +85,14 @@ inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 comandos : declaracao		{ $$ = $1; }
 		 |					{ $$ = ""; }
 
-declaracao : INTEIRO IDENTIFICADOR comandos 			{ $$ = "    int " + $2 + ";\n" + $3; }
-		   | REAL IDENTIFICADOR comandos				{ $$ = "    double " + $2 + ";\n" + $3; }
-		   | CARACTER IDENTIFICADOR comandos			{ $$ = "    char " + $2 + ";\n" + $3; }
-		   | IDENTIFICADOR RECEBE operacao comandos		{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
-		   | IDENTIFICADOR INCREMENTA comandos 			{ $$ = "    " + $1 + "++;\n" + $3; }
-		   | IDENTIFICADOR DECREMENTA comandos 			{ $$ = "    " + $1 + "--;\n" + $3; }
+declaracao : INTEIRO IDENTIFICADOR comandos 														{ $$ = "    int " + $2 + ";\n" + $3; }
+		   | REAL IDENTIFICADOR comandos															{ $$ = "    double " + $2 + ";\n" + $3; }
+		   | CARACTER IDENTIFICADOR comandos														{ $$ = "    char " + $2 + ";\n" + $3; }
+		   | IDENTIFICADOR RECEBE operacao comandos													{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR INCREMENTA comandos 														{ $$ = "    " + $1 + "++;\n" + $3; }
+		   | IDENTIFICADOR DECREMENTA comandos 														{ $$ = "    " + $1 + "--;\n" + $3; }
+		   | IDENTIFICADOR comparacao comandos														{ $$ = "    " + $1 + $2 + "\n" + $3; }
+		   | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
 
 operacao : IDENTIFICADOR 								{ $$ = $1; }
 		 | NUMERO										{ $$ = $1; }
@@ -81,6 +100,25 @@ operacao : IDENTIFICADOR 								{ $$ = $1; }
 		 | IDENTIFICADOR SUTRACAO IDENTIFICADOR 		{ $$ = $1 + " - " + $3; }
 		 | IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR 	{ $$ = $1 + " * " + $3; }
 		 | IDENTIFICADOR DIVISAO IDENTIFICADOR 			{ $$ = $1 + " / " + $3; }
+
+comparacao : MENOR IDENTIFICADOR 		{ $$ = "<" + $2; }
+		   | MENOR NUMERO 		 		{ $$ = "<" + $2; }
+		   | MENOR_IGUAL IDENTIFICADOR 	{ $$ = "<=" + $2; }
+		   | MENOR_IGUAL NUMERO 		{ $$ = "<=" + $2; }
+		   | MAIOR IDENTIFICADOR 		{ $$ = ">" + $2; }
+		   | MAIOR NUMERO 		 		{ $$ = ">" + $2; }
+		   | MAIOR_IGUAL IDENTIFICADOR 	{ $$ = ">=" + $2; }
+		   | MAIOR_IGUAL NUMERO 		{ $$ = ">=" + $2; }
+		   | DIFERENTE IDENTIFICADOR 	{ $$ = "!=" + $2; }
+		   | DIFERENTE NUMERO			{ $$ = "!=" + $2; }
+
+for : IDENTIFICADOR RECEBE IDENTIFICADOR FIM for		{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| IDENTIFICADOR RECEBE operacao FIM for				{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| IDENTIFICADOR comparacao FIM for 					{ $$ = $1 + $2 + "; " + $4; }
+	| IDENTIFICADOR INCREMENTA comandos 				{ $$ = $1 + "++" + $3; }
+	| IDENTIFICADOR DECREMENTA comandos 				{ $$ = $1 + "--" + $3; }
+	| 													{ $$ = ""; }
+
 
 %%
 

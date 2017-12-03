@@ -13,6 +13,11 @@ funcao real media (inteiro a) {
 
   soma := 0
   quantidade := 0
+
+  para (i := 1; i <= a; i++) {
+    quantidade++
+    soma := soma + i
+  }
 }
 
 funcao inteiro test (inteiro a) {
