@@ -108,21 +108,21 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 |																																{ $$ = ""; }
 
 
-declaracao : INTEIRO IDENTIFICADOR comandos					 																	{ $$ = "    int " + $2 + ";\n" + $3; }
-		   | REAL IDENTIFICADOR comandos																						{ $$ = "    double " + $2 + ";\n" + $3; }
-		   | CARACTER IDENTIFICADOR comandos																					{ $$ = "    char " + $2 + ";\n" + $3; }
-		   | IDENTIFICADOR RECEBE operacao comandos																				{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
-		   | IDENTIFICADOR INCREMENTA comandos 																					{ $$ = "    " + $1 + "++;\n" + $3; }
-		   | IDENTIFICADOR DECREMENTA comandos 																					{ $$ = "    " + $1 + "--;\n" + $3; }
-		   | IDENTIFICADOR comparacao comandos																					{ $$ = "    " + $1 + $2 + "\n" + $3; }
-		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n"; }
-		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  							 	{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
-		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 	{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
-		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos	{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
-		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos	{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ");\n" + $7; }
-		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos { $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
-		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos { $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
-   		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos { $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
+declaracao : INTEIRO IDENTIFICADOR comandos					 																						{ $$ = "    int " + $2 + ";\n" + $3; }
+		   | REAL IDENTIFICADOR comandos																											{ $$ = "    double " + $2 + ";\n" + $3; }
+		   | CARACTER IDENTIFICADOR comandos																										{ $$ = "    char " + $2 + ";\n" + $3; }
+		   | IDENTIFICADOR RECEBE operacao comandos																									{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR INCREMENTA comandos 																										{ $$ = "    " + $1 + "++;\n" + $3; }
+		   | IDENTIFICADOR DECREMENTA comandos 																										{ $$ = "    " + $1 + "--;\n" + $3; }
+		   | IDENTIFICADOR comparacao comandos																										{ $$ = "    " + $1 + $2 + "\n" + $3; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos																		{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n"; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  							 						{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 						{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos						{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ");\n" + $7; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 									{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
+		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos 				{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
+   		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos 	{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
 
 
 operacao : IDENTIFICADOR 									{ $$ = $1; }
@@ -149,48 +149,48 @@ operacao : IDENTIFICADOR 									{ $$ = $1; }
 		 | NUMERO MODULO NUMERO								{ $$ = $1 + " % " + $3; }
 
 
-concatenacao : SOMA NUMERO concatenacao					            { $$ = " + " + $2 + $3; }
-		     | SOMA IDENTIFICADOR concatenacao			            { $$ = " + " + $2 + $3; }
-		     | SUTRACAO NUMERO concatenacao				            { $$ = " - " + $2 + $3; }
-		 	 | SUTRACAO IDENTIFICADOR concatenacao		            { $$ = " - " + $2 + $3; }
-	 		 | MULTIPLICACAO NUMERO concatenacao		            { $$ = " * " + $2 + $3; }
-	  	     | MULTIPLICACAO IDENTIFICADOR concatenacao	            { $$ = " * " + $2 + $3; }
-			 | DIVISAO NUMERO concatenacao				            { $$ = " / " + $2 + $3; }
-			 | DIVISAO IDENTIFICADOR concatenacao		            { $$ = " / " + $2 + $3; }
-			 | MODULO NUMERO concatenacao				            { $$ = " % " + $2 + $3; }
-		     | MODULO IDENTIFICADOR concatenacao		            { $$ = " % " + $2 + $3; }
-			 | 														{ $$ = ""; }
+concatenacao : SOMA NUMERO concatenacao					    { $$ = " + " + $2 + $3; }
+		     | SOMA IDENTIFICADOR concatenacao			    { $$ = " + " + $2 + $3; }
+		     | SUTRACAO NUMERO concatenacao				    { $$ = " - " + $2 + $3; }
+		 	 | SUTRACAO IDENTIFICADOR concatenacao		    { $$ = " - " + $2 + $3; }
+	 		 | MULTIPLICACAO NUMERO concatenacao		    { $$ = " * " + $2 + $3; }
+	  	     | MULTIPLICACAO IDENTIFICADOR concatenacao	    { $$ = " * " + $2 + $3; }
+			 | DIVISAO NUMERO concatenacao				    { $$ = " / " + $2 + $3; }
+			 | DIVISAO IDENTIFICADOR concatenacao		    { $$ = " / " + $2 + $3; }
+			 | MODULO NUMERO concatenacao				    { $$ = " % " + $2 + $3; }
+		     | MODULO IDENTIFICADOR concatenacao		    { $$ = " % " + $2 + $3; }
+			 | 												{ $$ = ""; }
 
 
-comparacao : MENOR IDENTIFICADOR 		{ $$ = " < " + $2; }
-		   | MENOR NUMERO 		 		{ $$ = " < " + $2; }
-		   | MENOR_IGUAL IDENTIFICADOR 	{ $$ = " <= " + $2; }
-		   | MENOR_IGUAL NUMERO 		{ $$ = " <= " + $2; }
-		   | MAIOR IDENTIFICADOR 		{ $$ = " > " + $2; }
-		   | MAIOR NUMERO 		 		{ $$ = " > " + $2; }
-		   | MAIOR_IGUAL IDENTIFICADOR 	{ $$ = " >= " + $2; }
-		   | MAIOR_IGUAL NUMERO 		{ $$ = " >= " + $2; }
-		   | IGUAL IDENTIFICADOR	 	{ $$ = " == " + $2; }
-		   | IGUAL NUMERO				{ $$ = " == " + $2; }
-		   | DIFERENTE IDENTIFICADOR 	{ $$ = " != " + $2; }
-		   | DIFERENTE NUMERO			{ $$ = " != " + $2; }
+comparacao : MENOR IDENTIFICADOR 							{ $$ = " < " + $2; }
+		   | MENOR NUMERO 		 							{ $$ = " < " + $2; }
+		   | MENOR_IGUAL IDENTIFICADOR 						{ $$ = " <= " + $2; }
+		   | MENOR_IGUAL NUMERO 							{ $$ = " <= " + $2; }
+		   | MAIOR IDENTIFICADOR 							{ $$ = " > " + $2; }
+		   | MAIOR NUMERO 		 							{ $$ = " > " + $2; }
+		   | MAIOR_IGUAL IDENTIFICADOR 						{ $$ = " >= " + $2; }
+		   | MAIOR_IGUAL NUMERO 							{ $$ = " >= " + $2; }
+		   | IGUAL IDENTIFICADOR	 						{ $$ = " == " + $2; }
+		   | IGUAL NUMERO									{ $$ = " == " + $2; }
+		   | DIFERENTE IDENTIFICADOR 						{ $$ = " != " + $2; }
+		   | DIFERENTE NUMERO								{ $$ = " != " + $2; }
 
 
-for : IDENTIFICADOR RECEBE IDENTIFICADOR FIM for		{ $$ = $1 + " = " + $3 + "; " + $5; }
-	| IDENTIFICADOR RECEBE operacao FIM for				{ $$ = $1 + " = " + $3 + "; " + $5; }
-	| IDENTIFICADOR comparacao FIM for 					{ $$ = $1 + $2 + "; " + $4; }
-	| IDENTIFICADOR RECEBE NUMERO FIM for				{ $$ = $1 + " = " + $3 + "; " + $5; }
-	| NUMERO comparacao FIM for 						{ $$ = $1 + $2 + "; " + $4; }
-	| IDENTIFICADOR INCREMENTA comandos 				{ $$ = $1 + "++" + $3; }
-	| IDENTIFICADOR DECREMENTA comandos 				{ $$ = $1 + "--" + $3; }
-	| 													{ $$ = ""; }
+for : IDENTIFICADOR RECEBE IDENTIFICADOR FIM for			{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| IDENTIFICADOR RECEBE operacao FIM for					{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| IDENTIFICADOR comparacao FIM for 						{ $$ = $1 + $2 + "; " + $4; }
+	| IDENTIFICADOR RECEBE NUMERO FIM for					{ $$ = $1 + " = " + $3 + "; " + $5; }
+	| NUMERO comparacao FIM for 							{ $$ = $1 + $2 + "; " + $4; }
+	| IDENTIFICADOR INCREMENTA comandos 					{ $$ = $1 + "++" + $3; }
+	| IDENTIFICADOR DECREMENTA comandos 					{ $$ = $1 + "--" + $3; }
+	| 														{ $$ = ""; }
 
 
-if : IDENTIFICADOR comparacao							{ $$ = $1 + $2; }
-   | NUMERO comparacao									{ $$ = $1 + $2; }
-   | operacao comparacao								{ $$ = $1 + $2; }
-   | NUMERO												{ $$ = $1; }
-   | IDENTIFICADOR										{ $$ = $1; }
+if : IDENTIFICADOR comparacao								{ $$ = $1 + $2; }
+   | NUMERO comparacao										{ $$ = $1 + $2; }
+   | operacao comparacao									{ $$ = $1 + $2; }
+   | NUMERO													{ $$ = $1; }
+   | IDENTIFICADOR											{ $$ = $1; }
 
 
 %%
