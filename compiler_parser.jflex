@@ -41,6 +41,14 @@ caracter { return Parser.CARACTER; }
 para 		{ return Parser.PARA; }
 se 	 		{ return Parser.SE; }
 senao		{ return Parser.SENAO; }
+enquanto	{ return Parser.ENQUANTO; }
+faca		{ return Parser.FACA; }
+ate			{ return Parser.ATE; }
+caso		{ return Parser.CASO; }
+opcao		{ return Parser.OPCAO; }
+fim_opcao	{ return Parser.FIM_OPCAO; }
+:			{ return Parser.DOIS_PONTOS; }
+,			{ return Parser.VIRGULA; }
 retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
@@ -51,14 +59,17 @@ retornar 	{ return Parser.RETORNAR; }
 "}" { return Parser.FECHA_CHAVES; }
 "(" { return Parser.ABRE_PARENTESES; }
 ")" { return Parser.FECHA_PARENTESES; }
+"[" { return Parser.ABRE_COLCHETES; }
+"]" { return Parser.FECHA_COLCHETES; }
 
 [0-9]* {
 	yyparser.yylval = new ParserVal(yytext());
 	return Parser.NUMERO; }
 
-(')[a-zA-Z](') {
+
+((')[a-zA-Z0-9% \\]*('))|((\")[a-zA-Z0-9% \\]*(\")) {
 	yyparser.yylval = new ParserVal(yytext());
-	return Parser.LETRA; }
+	return Parser.LITERAL; }
 
 "+"  { return Parser.SOMA; }
 "-"  { return Parser.SUTRACAO; }

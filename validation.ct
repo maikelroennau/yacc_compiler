@@ -77,8 +77,8 @@ funcao_principal {
 
   i := 0
   enquanto (i < tamanho) {
-    funcoes[i]=geraFuncao()
-    valores[i]=geraValores()
+    funcoes[i]:=geraFuncao()
+    valores[i]:=geraValores()
     i++  
   }
 
@@ -86,13 +86,13 @@ funcao_principal {
   faca {
     caso (funcoes[i]) {
       opcao 'm': 
-        resultado[i]=media(valores[i])
+        resultado[i]:=media(valores[i])
         fim_opcao
       opcao 's':
-        resultado[i]=soma(valores[i])
+        resultado[i]:=soma(valores[i])
         fim_opcao
       opcao 'f':
-        resultado[i]=fatorial(valores[i])
+        resultado[i]:=fatorial(valores[i])
         fim_opcao
       }
       i++
