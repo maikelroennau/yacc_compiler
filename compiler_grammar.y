@@ -8,6 +8,7 @@
 %token <sval> INCLUSAO_ARQUIVO
 %token <sval> COMENTARIO
 %token <sval> COMENTARIO_MULTIPLO
+%token <sval> NUMERO
 %token ABRE_CHAVES
 %token FECHA_CHAVES
 %token ABRE_PARENTESES
@@ -45,12 +46,12 @@ programa : inclusao programa			{ $$ = $1 + "\n" + $2; }
 		 | comentario programa			{ $$ = $1 + "\n" + $2; }
 	     |								{ $$ = ""; }
 
-comentario : COMENTARIO 		 { $$ = $1 + "\n"; }
-		   | COMENTARIO_MULTIPLO { $$ = $1 + "\n"; }
+comentario : COMENTARIO 		 { $$ = $1; }
+		   | COMENTARIO_MULTIPLO { $$ = $1; }
 
-funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 													{ $$ = "\nint main() {\n" + $3 + "}\n"; }
+funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 													{ $$ = "\nint main() {\n" + $3 + "}"; }
 
-funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_PARENTESES parametro FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES { $$ = "\nfunction " + $2 + "(" + $4 + ") {\n" + $7 + "}\n"; }
+funcao_secundaria : FUNCAO_SECUNDARIA tipo ABRE_PARENTESES parametro FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES { $$ = "\nfunction " + $2 + "(" + $4 + ") {\n" + $7 + "}"; }
 
 tipo : INTEIRO IDENTIFICADOR 	{ $$ = "int " + $2; }
 	 | REAL IDENTIFICADOR	 	{ $$ = "double " + $2; }
@@ -75,6 +76,7 @@ declaracao : INTEIRO IDENTIFICADOR comandos 			{ $$ = "    int " + $2 + ";\n" + 
 		   | IDENTIFICADOR DECREMENTA comandos 			{ $$ = "    " + $1 + "--;\n" + $3; }
 
 operacao : IDENTIFICADOR 								{ $$ = $1; }
+		 | NUMERO										{ $$ = $1; }
          | IDENTIFICADOR SOMA IDENTIFICADOR 			{ $$ = $1 + " + " + $3; }
 		 | IDENTIFICADOR SUTRACAO IDENTIFICADOR 		{ $$ = $1 + " - " + $3; }
 		 | IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR 	{ $$ = $1 + " * " + $3; }

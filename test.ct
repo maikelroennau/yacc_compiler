@@ -3,12 +3,23 @@
 incluir <stdio.h>
 incluir <stdlib.h>
 
+// Funcao media que retorna um real
+
+funcao real media (inteiro a) {
+  inteiro i
+  inteiro soma
+  inteiro quantidade
+  real retorno
+
+  soma := 0
+  quantidade := 0
+}
+
 funcao inteiro test (inteiro a) {
   inteiro variavel
   real teste
   caracter teste_2
 }
-
 
 funcao caracter test_2 () {
   inteiro contador
@@ -31,4 +42,18 @@ funcao_principal {
   i := soma - i
   i := soma * i
   soma := i / soma
+  i := 0
+  soma := 0
+  soma := 0
+  quantidade := 0
+  a := 0
+  b := 1
+  c := 2
+  d := 3
+  e := 4
+  f := 5
+  g := 6
+  h := 7
+  i := 8
+  j := 9
 }

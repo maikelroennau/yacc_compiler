@@ -47,6 +47,9 @@ caracter { return Parser.CARACTER; }
 "(" { return Parser.ABRE_PARENTESES; }
 ")" { return Parser.FECHA_PARENTESES; }
 
+[0-9]* {
+		yyparser.yylval = new ParserVal(yytext());
+		return Parser.NUMERO; }
 
 "+"  { return Parser.SOMA; }
 "-"  { return Parser.SUTRACAO; }
@@ -56,6 +59,7 @@ caracter { return Parser.CARACTER; }
 ":=" { return Parser.RECEBE; }
 "++" { return Parser.INCREMENTA; }
 "--" { return Parser.DECREMENTA; }
+
 
 
 [a-zA-Z_][a-zA-Z0-9_]*	{
