@@ -38,6 +38,12 @@ caracter { return Parser.CARACTER; }
 "(" { return Parser.ABRE_PARENTESES; }
 ")" { return Parser.FECHA_PARENTESES; }
 
+
+"+"  { return Parser.SOMA; }
+"-"  { return Parser.SUTRACAO; }
+"*"  { return Parser.MULTIPLICACAO; }
+"/"  { return Parser.DIVISAO; }
+
 ":=" { return Parser.RECEBE; }
 "++" { return Parser.INCREMENTA; }
 "--" { return Parser.DECREMENTA; }

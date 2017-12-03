@@ -25,5 +25,8 @@ funcao_principal {
   i++
   i--
   soma--
-
+  soma := soma + soma
+  i := soma - i
+  i := soma * i
+  soma := i / soma
 }
