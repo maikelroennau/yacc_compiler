@@ -51,6 +51,8 @@ retornar 	{ return Parser.RETORNAR; }
 "}" { return Parser.FECHA_CHAVES; }
 "(" { return Parser.ABRE_PARENTESES; }
 ")" { return Parser.FECHA_PARENTESES; }
+"[" { return Parser.ABRE_COLCHETES; }
+"]" { return Parser.FECHA_COLCHETES; }
 
 [0-9]* {
 	yyparser.yylval = new ParserVal(yytext());

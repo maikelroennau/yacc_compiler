@@ -16,6 +16,8 @@
 %token FECHA_CHAVES
 %token ABRE_PARENTESES
 %token FECHA_PARENTESES
+%token ABRE_COLCHETES
+%token FECHA_COLCHETES
 
 %token FUNCAO_PRINCIPAL
 %token FUNCAO_SECUNDARIA
@@ -62,6 +64,7 @@
 %type <sval> if
 %type <sval> argumento
 %type <sval> concatenacao
+%type <sval> array
 
 %%
 inicio : programa	 { System.out.println($1); }
@@ -108,9 +111,9 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 |																																{ $$ = ""; }
 
 
-declaracao : INTEIRO IDENTIFICADOR comandos					 																						{ $$ = "    int " + $2 + ";\n" + $3; }
-		   | REAL IDENTIFICADOR comandos																											{ $$ = "    double " + $2 + ";\n" + $3; }
-		   | CARACTER IDENTIFICADOR comandos																										{ $$ = "    char " + $2 + ";\n" + $3; }
+declaracao : INTEIRO IDENTIFICADOR array comandos					 																				{ $$ = "    int " + $2 + $3 + ";\n" + $4; }
+		   | REAL IDENTIFICADOR array comandos																										{ $$ = "    double " + $2 + $3 + ";\n" + $4; }
+		   | CARACTER IDENTIFICADOR array comandos																									{ $$ = "    char " + $2 + $3 + ";\n" + $4; }
 		   | IDENTIFICADOR RECEBE operacao comandos																									{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
 		   | IDENTIFICADOR INCREMENTA comandos 																										{ $$ = "    " + $1 + "++;\n" + $3; }
 		   | IDENTIFICADOR DECREMENTA comandos 																										{ $$ = "    " + $1 + "--;\n" + $3; }
@@ -191,6 +194,10 @@ if : IDENTIFICADOR comparacao								{ $$ = $1 + $2; }
    | operacao comparacao									{ $$ = $1 + $2; }
    | NUMERO													{ $$ = $1; }
    | IDENTIFICADOR											{ $$ = $1; }
+
+array : ABRE_COLCHETES IDENTIFICADOR FECHA_COLCHETES		{ $$ = "[" + $2 + "]"; }
+	  | ABRE_COLCHETES NUMERO FECHA_COLCHETES				{ $$ = "[" + $2 + "]"; }
+	  | 													{ $$ = ""; }
 
 
 %%
