@@ -42,6 +42,8 @@ para 		{ return Parser.PARA; }
 se 	 		{ return Parser.SE; }
 senao		{ return Parser.SENAO; }
 enquanto	{ return Parser.ENQUANTO; }
+faca		{ return Parser.FACA; }
+ate			{ return Parser.ATE; }
 retornar 	{ return Parser.RETORNAR; }
 
 \<.*\>	{ yyparser.yylval = new ParserVal(yytext());
