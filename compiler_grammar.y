@@ -129,6 +129,7 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR LITERAL																												{ $$ = "    return " + $2 + ";\n"; }
+		 | comentario comandos																											{ $$ = "    " + $1 + $2; }
 		 |																																{ $$ = ""; }
 
 
@@ -140,7 +141,7 @@ declaracao : INTEIRO IDENTIFICADOR array comandos					 																				{ $$ 
 		   | IDENTIFICADOR INCREMENTA comandos 																										{ $$ = "    " + $1 + "++;\n" + $3; }
 		   | IDENTIFICADOR DECREMENTA comandos 																										{ $$ = "    " + $1 + "--;\n" + $3; }
 		   | IDENTIFICADOR comparacao comandos																										{ $$ = "    " + $1 + $2 + "\n" + $3; }
-		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos																		{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n"; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos																		{ $$ = "    " + $1 + "(" + $3 + ");\n" + $5; }
 		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  							 						{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
 		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 						{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
 		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos						{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
