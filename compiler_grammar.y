@@ -90,7 +90,8 @@ inclusao : INCLUIR INCLUSAO_ARQUIVO	{ $$ = "#include " + $2; }
 
 comandos : declaracao																			    { $$ = $1; }
 		 | PARA ABRE_PARENTESES for FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos 	{ $$ = "    for(" + $3 + ") {\n    " + $6 + "    }\n" + $8; }
-		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos		{ $$ = "    if("  + $3 + ") {\n    " + $6 + "    }\n" + $8; }
+		 | SE ABRE_PARENTESES if FECHA_PARENTESES comandos											{ $$ = "    if("  + $3 + ")\n    " + $5; }
 		 | RETORNAR IDENTIFICADOR																	{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																			{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR LETRA																			{ $$ = "    return " + $2 + ";\n"; }
