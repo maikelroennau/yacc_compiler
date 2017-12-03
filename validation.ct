@@ -43,7 +43,7 @@ funcao inteiro fatorial (inteiro a) {
   inteiro fat
 
   fat := 1
-  para (i=1;i<=a;i++) {}
+  para (i:=1;i<=a;i++) {
     fat:=fat*i
   }
   retornar fat
