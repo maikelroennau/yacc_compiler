@@ -6,8 +6,6 @@
 /* BYACC Declarations */
 %token <sval> IDENTIFICADOR
 %token <sval> INCLUSAO_ARQUIVO
-%token <sval> COMENTARIO
-%token <sval> COMENTARIO_MULTIPLO
 %token <sval> NUMERO
 %token <sval> FIM
 %token <sval> LITERAL
@@ -68,7 +66,6 @@
 %type <sval> declaracao
 %type <sval> parametro
 %type <sval> operacao
-%type <sval> comentario
 %type <sval> comparacao
 %type <sval> for
 %type <sval> if
@@ -84,11 +81,8 @@ inicio : programa	 { System.out.println($1); }
 programa : inclusao programa			{ $$ = $1 + "\n" + $2; }
 		 | funcao_principal programa 	{ $$ = $1 + "\n" + $2; }
 		 | funcao_secundaria programa	{ $$ = $1 + "\n" + $2; }
-		 | comentario programa			{ $$ = $1 + "\n" + $2; }
 	     |								{ $$ = ""; }
 
-comentario : COMENTARIO 		 		{ $$ = $1; }
-		   | COMENTARIO_MULTIPLO 		{ $$ = $1; }
 
 funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 													{ $$ = "\nint main() {\n" + $3 + "}"; }
 
@@ -131,7 +125,6 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR LITERAL																												{ $$ = "    return " + $2 + ";\n"; }
-		 | comentario comandos																											{ $$ = "    " + $1 + $2; }
 		 |																																{ $$ = ""; }
 
 
