@@ -21,13 +21,9 @@ NL = \n | \r | \r\n
 
 %%
 
-\/\/.* {
-		yyparser.yylval = new ParserVal(yytext());
-		return Parser.COMENTARIO; }
+\/\/.* { }
 
-\/\*.*\*\/ {
-		yyparser.yylval = new ParserVal(yytext());
-		return Parser.COMENTARIO_MULTIPLO; }
+\/\*.*\*\/ { }
 
 
 funcao_principal 	{ return Parser.FUNCAO_PRINCIPAL; }
