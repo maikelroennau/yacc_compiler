@@ -53,6 +53,7 @@
 %token ENQUANTO
 %token FACA
 %token ATE
+%token IMPRIMA
 %token CASO
 %token OPCAO
 %token FIM_OPCAO
@@ -86,8 +87,8 @@ programa : inclusao programa			{ $$ = $1 + "\n" + $2; }
 		 | comentario programa			{ $$ = $1 + "\n" + $2; }
 	     |								{ $$ = ""; }
 
-comentario : COMENTARIO 		 { $$ = $1; }
-		   | COMENTARIO_MULTIPLO { $$ = $1; }
+comentario : COMENTARIO 		 		{ $$ = $1; }
+		   | COMENTARIO_MULTIPLO 		{ $$ = $1; }
 
 funcao_principal : FUNCAO_PRINCIPAL ABRE_CHAVES comandos FECHA_CHAVES 													{ $$ = "\nint main() {\n" + $3 + "}"; }
 
@@ -126,6 +127,7 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 | ENQUANTO ABRE_PARENTESES if FECHA_PARENTESES ABRE_CHAVES comandos FECHA_CHAVES comandos										{ $$ = "    while(" + $3 + ") {\n    "+ $6 + "    }\n" + $8; }
 		 | FACA ABRE_CHAVES comandos FECHA_CHAVES ATE ABRE_PARENTESES if FECHA_PARENTESES comandos										{ $$ = "    do{\n    " + $3 + "    } while(" + $7 + ");\n" + $9; }
 		 | CASO ABRE_PARENTESES condicao FECHA_PARENTESES ABRE_CHAVES opcao FECHA_CHAVES comandos 										{ $$ = "    switch(" + $3 + ") {\n    " + $6 + "}\n" + $8; }
+		 | IMPRIMA ABRE_PARENTESES argumento FECHA_PARENTESES comandos 																	{ $$ = "    printf(" + $3 + ");\n" + $5;  }
 		 | RETORNAR IDENTIFICADOR																										{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR NUMERO																												{ $$ = "    return " + $2 + ";\n"; }
 		 | RETORNAR LITERAL																												{ $$ = "    return " + $2 + ";\n"; }
@@ -133,22 +135,22 @@ comandos : declaracao																				   									{ $$ = $1; }
 		 |																																{ $$ = ""; }
 
 
-declaracao : INTEIRO IDENTIFICADOR array comandos					 																				{ $$ = "    int " + $2 + $3 + ";\n" + $4; }
-		   | REAL IDENTIFICADOR array comandos																										{ $$ = "    double " + $2 + $3 + ";\n" + $4; }
-		   | CARACTER IDENTIFICADOR array comandos																									{ $$ = "    char " + $2 + $3 + ";\n" + $4; }
-		   | IDENTIFICADOR RECEBE operacao comandos																									{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
-		   | IDENTIFICADOR array RECEBE operacao comandos																							{ $$ = "    " + $1 + $2 + " = " + $4 + ";\n" + $5; }
-		   | IDENTIFICADOR INCREMENTA comandos 																										{ $$ = "    " + $1 + "++;\n" + $3; }
-		   | IDENTIFICADOR DECREMENTA comandos 																										{ $$ = "    " + $1 + "--;\n" + $3; }
-		   | IDENTIFICADOR comparacao comandos																										{ $$ = "    " + $1 + $2 + "\n" + $3; }
-		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos																		{ $$ = "    " + $1 + "(" + $3 + ");\n" + $5; }
-		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  							 						{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
-		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 						{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
-		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos						{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
-		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ");\n" + $7; }
-		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 									{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
-		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos 				{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
-   		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos 	{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
+declaracao : INTEIRO IDENTIFICADOR array comandos							 																				{ $$ = "    int " + $2 + $3 + ";\n" + $4; }
+		   | REAL IDENTIFICADOR array comandos																												{ $$ = "    double " + $2 + $3 + ";\n" + $4; }
+		   | CARACTER IDENTIFICADOR array comandos																											{ $$ = "    char " + $2 + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR RECEBE operacao comandos																											{ $$ = "    " + $1 + " = " + $3 + ";\n" + $4; }
+		   | IDENTIFICADOR array RECEBE operacao comandos																									{ $$ = "    " + $1 + $2 + " = " + $4 + ";\n" + $5; }
+		   | IDENTIFICADOR INCREMENTA comandos 																												{ $$ = "    " + $1 + "++;\n" + $3; }
+		   | IDENTIFICADOR DECREMENTA comandos 																												{ $$ = "    " + $1 + "--;\n" + $3; }
+		   | IDENTIFICADOR comparacao comandos																												{ $$ = "    " + $1 + $2 + "\n" + $3; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos																				{ $$ = "    " + $1 + "(" + $3 + ");\n" + $5; }
+		   | IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos		  									 						{ $$ = "    " + $1 + "(" + $3 + ")" + $5 + ";\n" + $6; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos				 								{ $$ = "    (" + $2 + "(" + $4 + "));\n" + $7; }
+		   | ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos								{ $$ = "    (" + $2 + "(" + $4 + ")" + $6 + ");\n" + $8; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos															{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ");\n" + $7; }
+		   | IDENTIFICADOR RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 											{ $$ = "    " + $1 + " = " + $3 + "(" + $5 + ")" + $7 + ";\n" + $8; }
+		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos		 				{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + "));\n" + $9; }
+   		   | IDENTIFICADOR RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao FECHA_PARENTESES comandos		 	{ $$ = "    " + $1 + " = (" + $4 + "(" + $6 + ")" + $8 + ");\n" + $10; }
 		   | IDENTIFICADOR array RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES comandos													{ $$ = "    " + $1 + $2 + " = " + $4 + "(" + $6 + ");\n" + $8; }
 		   | IDENTIFICADOR array RECEBE IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES concatenacao comandos 										{ $$ = "    " + $1 + $2 + " = " + $4 + "(" + $6 + ")" + $8 + ";\n" + $9; }
 		   | IDENTIFICADOR array RECEBE ABRE_PARENTESES IDENTIFICADOR ABRE_PARENTESES argumento FECHA_PARENTESES FECHA_PARENTESES comandos 					{ $$ = "    " + $1 + $2 + " = (" + $5 + "(" + $7 + "));\n" + $10; }
@@ -228,15 +230,14 @@ array : ABRE_COLCHETES IDENTIFICADOR FECHA_COLCHETES		{ $$ = "[" + $2 + "]"; }
 
 
 condicao : IDENTIFICADOR array	{ $$ = $1 + $2; }
-		 | NUMERO 				{ $$ = $1; }
 		 | LITERAL 				{ $$ = $1; }
 		 | if 					{ $$ = $1; }
 
 
-opcao : OPCAO LITERAL DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
-	  | OPCAO NUMERO DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
-	  | OPCAO IDENTIFICADOR DOIS_PONTOS comandos FIM_OPCAO opcao { $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
-	  | 			{ $$ = ""; }
+opcao : OPCAO LITERAL DOIS_PONTOS comandos FIM_OPCAO opcao 			{ $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | OPCAO NUMERO DOIS_PONTOS comandos FIM_OPCAO opcao 			{ $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | OPCAO IDENTIFICADOR DOIS_PONTOS comandos FIM_OPCAO opcao 	{ $$ = "    case " + $2 + ":\n        " + $4 + "        break;\n    " + $6; }
+	  | 															{ $$ = ""; }
 
 
 %%
